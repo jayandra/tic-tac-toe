@@ -5,21 +5,27 @@ const DefaultGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard({ onSquareSelect, currentActivePlayer }) {
-  const [gameBoard, updateGameBoard] = React.useState(DefaultGameBoard);
+export default function GameBoard({
+  turns,
+  onSquareSelect,
+  currentActivePlayer,
+}) {
+  let gameBoard = DefaultGameBoard;
+  for (let turn of turns) {
+    let { player, moveMade } = turn;
+    let { x, y } = moveMade;
+
+    gameBoard[x][y] = player;
+  }
 
   function addPlayerSymbol(row, col) {
     if (gameBoard[row][col] == null) {
-      updateGameBoard((gb) => {
-        let gameBoardCopy = [...gameBoard.map((r) => [...r])];
-        gameBoardCopy[row][col] = currentActivePlayer;
-        if (checkWinner(gameBoardCopy) == true) {
-          alert(currentActivePlayer + " has wone the game!!!! ");
-        }
-        return gameBoardCopy;
-      });
+      gameBoard[row][col] = currentActivePlayer;
+      if (checkWinner(gameBoard) == true) {
+        alert(currentActivePlayer + " has wone the game!!!! ");
+      }
 
-      onSquareSelect();
+      onSquareSelect({ rowIndex: row, colIndex: col });
     }
   }
 
@@ -45,7 +51,6 @@ export default function GameBoard({ onSquareSelect, currentActivePlayer }) {
 
     for (const group of lines) {
       for (const line of group) {
-        console.log(line);
         if (line[0] && line.every((cell) => cell === line[0])) {
           winner = true; // Set the winner flag to true if a line matches
           break;

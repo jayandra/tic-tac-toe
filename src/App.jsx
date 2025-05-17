@@ -1,10 +1,22 @@
 import { useState } from "react";
 import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
+import Log from "./components/Log";
 
 function App() {
   const [activePlayer, updateActivePlayer] = useState("X");
-  function handlePlayersMove() {
+  const [gameTruns, updateGameTruns] = useState([]);
+
+  function handlePlayersMove({ rowIndex, colIndex }) {
+    updateGameTruns((currentList) => {
+      let currentListCopy = [
+        { player: activePlayer, moveMade: { x: rowIndex, y: colIndex } },
+        ...currentList,
+      ];
+
+      return currentListCopy;
+    });
+
     updateActivePlayer((currentActivePlayer) =>
       currentActivePlayer === "X" ? "O" : "X"
     );
@@ -29,6 +41,7 @@ function App() {
           />
         </ol>
         <GameBoard
+          turns={gameTruns}
           onSquareSelect={handlePlayersMove}
           currentActivePlayer={activePlayer}
         />
@@ -37,7 +50,7 @@ function App() {
         )} */}
         {/* <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} /> */}
       </div>
-      {/* <Log turns={gameTurns} /> */}
+      <Log turns={gameTruns} />
     </main>
   );
 }
