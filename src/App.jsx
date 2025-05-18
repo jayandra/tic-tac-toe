@@ -101,6 +101,7 @@ function App() {
   return (
     <main>
       <div id="game-container">
+        <br />
         <ol id="players" className="highlight-player">
           <Player
             initialName={players.X}
@@ -115,6 +116,7 @@ function App() {
             onChangeName={handleNameChange}
           />
         </ol>
+        <div style={{ textAlign: "center" }}>Click "Edit" to set player names for X and O before starting the game!!!</div>
         {(winningPlayer || isDraw) && (
           <GameOver
             winner={players[winningPlayer]}
