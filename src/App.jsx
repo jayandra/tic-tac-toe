@@ -74,6 +74,7 @@ function App() {
   const activePlayer = determineCurrentPlayer(gameTurns);
   const gameBoard = determineGameBoard(gameTurns);
   const winningPlayer = determineWinner(gameBoard);
+  const isDraw = gameTurns.length === 9 ? true : false;
 
   function handlePlayersMove({ rowIndex, colIndex }) {
     updategameTurns((currentList) => {
@@ -114,7 +115,7 @@ function App() {
             onChangeName={handleNameChange}
           />
         </ol>
-        {winningPlayer && (
+        {(winningPlayer || isDraw) && (
           <GameOver
             winner={players[winningPlayer]}
             onRestart={resetGameBoard}
