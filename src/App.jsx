@@ -9,6 +9,10 @@ const DefaultGameBoard = [
   [null, null, null],
   [null, null, null],
 ];
+const DefaultPlayers = {
+  X: "Player 1",
+  O: "Player 2",
+};
 
 function determineGameBoard(gameTurns) {
   // We need a deep copy; else updating gameTurns to [] doesn't get reflected in the board
@@ -65,6 +69,8 @@ function determineWinner(gb) {
 
 function App() {
   const [gameTurns, updategameTurns] = useState([]);
+  const [players, updatePlayers] = useState(DefaultPlayers);
+
   const activePlayer = determineCurrentPlayer(gameTurns);
   const gameBoard = determineGameBoard(gameTurns);
   const winningPlayer = determineWinner(gameBoard);
@@ -82,20 +88,27 @@ function App() {
   function resetGameBoard() {
     updategameTurns([]);
   }
-  function handleNameChange(playerName, symbol) {}
+  function handleNameChange(playerName, symbol) {
+    updatePlayers((currentNames) => {
+      return {
+        ...currentNames,
+        [symbol]: playerName,
+      };
+    });
+  }
 
   return (
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            initialName="Player 1"
+            initialName={players.X}
             symbol="X"
             isActive={activePlayer === "X"}
             onChangeName={handleNameChange}
           />
           <Player
-            initialName="Player 2"
+            initialName={players.O}
             symbol="O"
             isActive={activePlayer === "O"}
             onChangeName={handleNameChange}
@@ -103,7 +116,7 @@ function App() {
         </ol>
         {winningPlayer && (
           <GameOver
-            winner={winningPlayer}
+            winner={players[winningPlayer]}
             onRestart={resetGameBoard}
           ></GameOver>
         )}
