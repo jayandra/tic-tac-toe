@@ -4,19 +4,19 @@ import GameBoard from "./components/GameBoard";
 import Log from "./components/Log";
 import GameOver from "./components/GameOver";
 
-const DefaultGameBoard = [
+const DEFAULT_GAME_BOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
-const DefaultPlayers = {
+const DEFAULT_PLAYERS = {
   X: "Player 1",
   O: "Player 2",
 };
 
 function determineGameBoard(gameTurns) {
   // We need a deep copy; else updating gameTurns to [] doesn't get reflected in the board
-  let gameBoard = [...DefaultGameBoard.map((row) => [...row])];
+  let gameBoard = [...DEFAULT_GAME_BOARD.map((row) => [...row])];
   for (let turn of gameTurns) {
     let { player, moveMade } = turn;
     let { x, y } = moveMade;
@@ -69,7 +69,7 @@ function determineWinner(gb) {
 
 function App() {
   const [gameTurns, updategameTurns] = useState([]);
-  const [players, updatePlayers] = useState(DefaultPlayers);
+  const [players, updatePlayers] = useState(DEFAULT_PLAYERS);
 
   const activePlayer = determineCurrentPlayer(gameTurns);
   const gameBoard = determineGameBoard(gameTurns);
